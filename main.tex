@@ -1,10 +1,11 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{datetime}
+\usepackage{verbatim}
 
-\title{A Review of Resource Management in Service Oriented Computing}
+\title{A Review of Resource Management in Service Oriented Computing, an Operating System for the Grid}
 \author{Jovan Trujillo}
-\date{\currenttime}
+\date{\today}
 
 \usepackage{natbib}
 \usepackage{graphicx}
@@ -14,9 +15,103 @@
 \maketitle
 
 \section{Introduction}
-Resource management and scheduling in a wide area service oriented computing network is a complex problem because resources are geographically distributed, heterogeneous, owned by different individuals and organizations with different policies, have various access and code models, and have dynamically varying loads and availability.\citep{economygrid} Systems addressing these problems have been developed and are called Grid Resource Brokers (GRB). One such system is called Nimrod/G.
+Resource management and scheduling in a large service oriented computing network can be a complex problem. This is because resources are geographically distributed, heterogeneous, owned by different individuals and organizations, enforce different policies, have various access protocols, run different software stacks, and have dynamically varying loads and availability.\citep{economygrid} A grid computing operating system is needed in order to manage these resources into a coherent "virtual machine" to serve as a consistent interface for application development. 
 
-% This is the introduction from economygrid...
+%Systems addressing these problems have been developed and are called Grid Resource Brokers (GRB). One such system is called Nimrod/G.
+
+Grid computing services need middle-ware to manage application scheduling and resource allocation. A grid computing operating system also needs to account for partial system failure within the network. Therefore software scheduling and resource allocation needs to be distributed across the network. Any node would need to be able to support the role of the Grid operating system. 
+
+In this paper we provide a survey of what a Grid operating system consists of. We also describe implementations of Grid operating systems developed for research. Finally we describe what the current focus in Grid operating research is and speculate on what future implementations of such a system will consist of.  
+
+% Resource selection services are needed to assign Grid resources to application needs.  
+
+The main components of Grid computing are:
+\begin{itemize}
+\item Hardware resources.
+\item Software services.
+\item Service interfaces.
+\item Service directories.
+\item Mapping application needs to Grid resources 
+\item Service fault tolerance.
+\item Application scheduling across the Grid.
+\end{itemize}
+
+Hardware resources include desktops, workstations, clusters, storage, instrumentation, and network infrastructure. The hardware resources are distributed across a wide geographic area. The available hardware can be a heterogeneous aggregation of processor speeds, memory capacities, storage capacities, and network latencies. The local operating systems running on these systems can also be different. The available software services will inherently be different based on the capabilities of the underlying system. In order to combine these resources into a single virtual machine an abstraction layer is needed for software development. In conjunction with this abstraction layer a resource manager is needed to act as a meta-operating system for the virtual machine. Such an operating system would need to manage the multitude of applications that will request acces to the Grid. The system would have to manage which services are allowed for an application, and ensure that two applications do not conflict in their resource allocations. A Grid OS would would need to implement a distributed file system to consolidate all of the storage devices available into one single virtual storage interface for the client. Security and user authentication must also be taken into account in order to limit which resources they have access to.  
+
+Software services provided by a grid network can be developed by a wide variety of software tools. Services can be created using Windows Communication Foundation (WCF) and the .NET framework. RESTful web services can be created using a wide variety of programming languages and operating systems. Communication between a client and a service can use the REST/HTTP protocol, WSDL/SOAP protocol, or some custom protocol. A Grid operating system needs to be able to accommodate all of these types of services for a client. This leads to a need for a uniform interface between a grid's heterogeneous services and a client's application. 
+
+Service interfaces to the client application also need to be standardized to simplify program development for a grid system. Software services provided by the Grid would need some standardized application programming interface in order to be managed by the meta-operating system. Abstraction helps to provide the illusion of a single virtual machine interface to the grid system. A good example of such an interface is the web browser, which provides an interface using HTML, CSS, and JavaScript standards. Through the modern web browser clients can interface with a multitude of databases, create documents using word processing tools, develop software using virtual machine instances, and manage a cluster of computers for whatever task they need. All of these tasks are now being accomplished through a web browser to access various web services on the network known as the Cloud. 
+
+The services available from the grid at any given moment need to be located by a directory service, which identifies the capabilities of the service, it's address within the grid, and whether it is currently available. The Grid operating system would interface with this information to aid with connecting services to authorized applications. A service directory does not necessarily need to be embedded within the Grid OS, but may instead be yet another middle-ware service that the Grid OS uses to perform it's functions.  
+
+The Grid operating system will map applications to requested services. In this process the Grid OS must authenticate the user to use the application and resources, it must also locate the resources requested, and finally it must check whether the resources are available. Other tasks may include calculating the number of resources allowed to be allocated to the application. This can be based on computational need and cost. Finally is a service is unavailable due to a fault in the system then the Grid OS must be able to recover to continue to run the application. 
+
+Fault tolerance is an important function of a Grid OS. There will be cases when resources become unavailable during use. When such a case occurs the system should link the application to a new resource address automatically. Data may also need to be restored using a backup service. Fault tolerance is something that needs to be integrated into the Grid operating system, and may need to be distributed across the Grid in case the node hosting the operating system fails.  
+
+Application scheduling is needed to maintain acceptable loads acros a Grid network. Scheduling is also needed to prevent resource conflicts between applications and services accessing the same data. Several systems have been developed for grid scheduling. These include NetSolve, DISCWorld, AppLeS, and REXEC. \citep{nimrod} Today the largest grids are services sold by companies involved in Cloud Computing. The thousands of computing nodes available through Microsoft, Google, Amazon, etc. are the raw materials for creating a distributed virtual machine. 
+
+\section{Grid toolkit survey}
+
+\section{Grid meta-operating systems in development}
+
+\section{Conclusions}
+
+%***************************************************************************************************************************************
+\begin{comment}
+%% From cloudgridcompute reference
+Abstract: Cloud computing has become another buzzword after Web 2.0. However, there are dozens of different definitions for Cloud Computing and there seems to be no consensus on what a Cloud is. On the other hand, Cloud Computing is not a completely new concept; it has intricate connection to the relatively new but thirteen-year established Grid Computing paradigm, and other relevant technologies such as utility computing, cluster computing, and distributed systems in general. This paper strives to compare and contrast Cloud Computing with Grid Computing from various angles and gives insights into the essential characteristics of both. 
+
+% 100-Mile Overview
+Cloud Computing is hinting at a future in which we won't compute on local computers, but on centralized facilities operated by third-party compute and storage utilities. We sure won't miss the shrink-wrapped software to unwrap and install. Needless to say, this is not a new idea. In fact, back in 1961, computing pioneer John McCarthy predicted that "computation may someday be organized as a public utility" and went on to speculate how this might occur.
+
+In the mid 1990s, the term Grid was coined to describe technologies that would allow consumers to obtain computing power on demand. Ian Foster and others posited that by standardizing the protocols used to request computing power, we could spur the creation of a Computing Grid, analogous in form and utility to the electric power grid. Researchers subsequently developed these ideas in many exciting ways, producing for example large-scale federated systems (TeraGrid, Open Science Grid, caBIG, EGEE, Earth System Grid) that provide not just computing power, but also data and software, on demand. Standards organizations (e.g. OGF, OASIS) defined relevant standards. More prosaically, the term was also co-opted by industry as a marketing term for clusters. But no viable commercial Grid Computing providers emerged, at least not until recently. 
+
+% Definition of Cloud Computing
+A large-scale distributed computing paradigm that is driven by economies of scale, in which a pool of abstracted, virtualized, dynamically-scalable, managed computing power, storage, platforms, and services are delivered on demand to external customers over the Internet. 
+
+All of the papers I have read regarding grid computing management refer to the Globus Toolkit. I have yet to read about any other competing toolkit for developing grid operating systems. What about PVM? I wonder...
+
+
+
+
+
+%% From nimrod reference
+Scheduling on computational grids info:
+A number of projects are investigating scheduling on computational grids. They include AppLeS, NetSolve, and DISCWorld, but these do not employ the concept of computational economy in scheuling. REXEC supports the concept of computational economy, but it is limited to department/campus-wide network of workstations.
+
+The AppLeS (Application-Level Scheduling) builds agents for each application (case-by-case) responsible for offering a scheduling mechanism. It uses the NWS (Network Weather Service) to monitor the varying loads on resources/networks to select viable resource configurations. Whereas, Nimrod/G offers a tool level solution that applies to all applications and the users are not required to build scheduling agents for each of their applications as in AppLeS. 
+
+NetSolve is a client-agent-server system, which enables the user to solve complex scientific problems remotely. The NetSolve agent does the scheduling by searching for those resources that offer teh best performance in a network. The applications need to be built using one of the APIs provided by NetSolve to perform RPC-like computations. NetSolve also provides an API for creating task farms. That means the framing applications needs to be developed on a case-by-case basis using NetSolve APIs. 
+
+DISCWorld (Distributed Information Systems Control World) is a service-oriented metacomputing environment, based on the client-server-server model. Remote users can login to this environment over the Internet and request access to data, and also invoke services or operations on the available data. DISCWorld aims for remote information access whereas Nimrod/G focuses on providing an easy and transparent mechanism for accessing computational resources. 
+
+Another related tool that uses the concept of computational economy is REXEC, a remote execution environment for a campus-wide network of workstations, which is part of the Berkeley Millennium project. At the command line, the user can specify the maximum rate (credits per minute) that he is willing to pay for CPU time. The REXEC client selects a node that fits the user requirements and executes the application on it. The REXEC provides an extended shell for remote execution of applications on clusters. That is, it offers a generic user interface for computational economy on clusters, whereas Nimrod/G aims at offering a comprehensive and specialized environment for parametric computing in computational grids. Another difference is that REXEC executes jobs on the node computer directly, whereas Nimrod/G has the capability to submit jobs to queues on a remote system that, in turn, manages compute resources. 
+
+% Conclusions and Future Work
+The evolution of Nimrod from scheduling for a local computing environment to scheduling for the global computational grid has been discussed. In particular, we focused on the Nimrod/G architecture for resource management and scheduling on a computational grid. The various parameters that influence the scheduling on computational grids with a computational economy are presented. Some preliminary results from an earlier experiment are presented to demonstrate the scalability and the ability of Nimrod/G in making good scheduling decisions. Finally, we show how Nimrod/G relates to other projects. 
+
+The future work focuses on the use of economic theories in grid resource management and scheduling. The components that make up Grid Architecture for Computational Economy (GRACE) include global scheduler (broker), bid-manager, directory server, and bid-server working closely  with grid middle-ware and fabrics. The GRACE infrastructure also offers generic interfaces (APIs) that the grid tools and applications programmers can use to develop software supporting the computational economy. 
+
+%% From Introduction to Grid Computing with Globus (globus reference)
+Grid computing, most simply stated, is distributed computing taken to the next evolutionary level. The goal is to create the illusion of a simple yet large and powerful self managing virtual computer out of a large collection of connected heterogeneous systems sharing various combinations of resources. 
+
+The standardization of communications between heterogeneous systems created the Internet explosion. The emerging standardization for sharing resources, along with the availability of higher bandwidth, are driving a possibly equally large evolutionary step in grid computing. 
+
+The following major topics will be introduced to the readers in this chapter:
+
+\begin{itemize}
+\item What grid computing can do 
+\item Grid concepts and components
+\item Grid construction
+\item The present and the future
+\item What the grid cannot do
+\end{itemize}
+
+
+
+
+
+%% From economygrid
 Grid based computational infrastructure is a promising next generation computing platform for solving large-scale resource intensive problems. It couples a wide variety of geographically distributed computational resources (such as PCs, workstations, and clusters), storage systems, data sources, databases, computational kernels, and special purpose scientific instruments and presents them as a unified integrated resource. However, including application development, the management and scheduling of computations in the Grid environment is a complex undertaking as resources are geographically distributed, heterogeneous in nature, owned by different individuals or organizations with their own policies, have different access cost models with dynamically varying loads and availability conditions. A typical market-oriented Grid environment is shown in Figure 1. It encompasses a wide range of software technologies from local operating environments (operating or queuing systems) to global resource brokers and applications that are designed to exploit Grid capability. The interactions between these components must be secure and adapt to the changing resource status. Internationally, there are many projects actively exploring the design and development of different Grid system components and services for secure execution of applications on wide-area resources.
 
 As shown in Figure 1, the users in global Grid environment essentially interact with a Grid Resource Broker (GRB) that hides the complexity of resource management and scheduling. The broker discovers resources using Grid Information Services (GIS), negotiates with grid-enabled resources or their agents for service costs, performs resource selection, maps and schedules tasks to resources, stages the application and data for processing on remote resources, and finally gathers results and hands them to the user. It is also responsible for monitoring application execution progress along with managing and adapting to changes in the Grid environment such as resource failures. 
@@ -28,29 +123,36 @@ The current research and investment into computational grids is motivated by an 
 
 Like all systems involving goals, resources, and actions, computations can be viewed in economic terms. With the proliferation of networks, high-end computing systems architecture has moved from centralized toward decentralized models of control and action; use of economic driven market mechanisms would be a natural extension of this development. The ability of trade and price mechanisms to combine local decisions by diverse entities into globally effective characteristic implies their value for organizing computations in large systems such as Internet scale computational Grids. 
 
-The two key players in market oriented computational Grid are resource providers (we refer hereafter as GSPs - Grid Service Providers) and resource consumers (we refer hereafter as GRBs - Grid Resource Broker that acts as a consumer's software agent). Both have their own expectations and strategies for being part of the Grid. In this Grid economy, resource consumers adopt the strategy of solving their problems at low cost within a required timeframe and resource providers adopt the strategy of obtaining best possible return on their investment. The resource owners try to maximize their resource utilization by offering a competitive service access cost in order to attract consumers. The users (resource consumers) have an option of choosing the providers that best meet their requirements. If resource providers have local users, they will try to recoup the best possible return on "idle/leftover" resources. In order to achieve this, the Grid systems need to offer tools and mechanisms that allow both resource providers and consumers to express their requirements. The Grid resource consumers interact with brokers (also called super-schedulers) to expres their requirements such as the budget that they are willing to invest for solving a given problem and a deadline, a timeframe by which they need results. They also need capability to trade between these two requirements and steer the computations accordingly. The Grid Service Providers need tools for expressing their pricing policies and mechanisms that help them to maximize the profit and resource utilization. Various economic models, ranging from commodity market to auction-based, can be adopted for deciding pricing strategies. The Grid infrastructure needs to support these economic models for resource trading.
+The two key players in market oriented computational Grid are resource providers (we refer hereafter as GSPs - Grid Service Providers) and resource consumers (we refer hereafter as GRBs - Grid Resource Broker that acts as a consumer's software agent). Both have their own expectations and strategies for being part of the Grid. In this Grid economy, resource consumers adopt the strategy of solving their problems at low cost within a required time frame and resource providers adopt the strategy of obtaining best possible return on their investment. The resource owners try to maximize their resource utilization by offering a competitive service access cost in order to attract consumers. The users (resource consumers) have an option of choosing the providers that best meet their requirements. If resource providers have local users, they will try to recoup the best possible return on "idle/leftover" resources. In order to achieve this, the Grid systems need to offer tools and mechanisms that allow both resource providers and consumers to express their requirements. The Grid resource consumers interact with brokers (also called super-schedulers) to expres their requirements such as the budget that they are willing to invest for solving a given problem and a deadline, a timeframe by which they need results. They also need capability to trade between these two requirements and steer the computations accordingly. The Grid Service Providers need tools for expressing their pricing policies and mechanisms that help them to maximize the profit and resource utilization. Various economic models, ranging from commodity market to auction-based, can be adopted for deciding pricing strategies. The Grid infrastructure needs to support these economic models for resource trading.
 
 To date, individuals or organizations that have contributed resources to the Grid have been largely motivated by the public good, prizes, fun, fame, or collaborative advantage. This is clearly evident from the construction of private grids (but on volunteer resources) or research test-beds such as Distributed.net, SETI@Home, Condor pool, DAS (Distributed ASCI Supercomputer), GUSTO, and eGrid. Even commercial companies such as Entropia, ProcessTree, Popular Power, Mojo Nation, United Devices, and Parabon are exploiting idle CPU cycles from desktop machines to build a commercial computational Grid. These companies are able to develop large-scale infrastructure for Internet computing and use it for their own financial gain by charging for access to CPU cycles for their customers without offering fiscal incentive to all resource contributors. In the long run, this model is less likely to succeed in creating a maintainable and sustainable infrastructure. Therefore, a Grid economy seems a better model for managing and handling requirements of both Grid providers and consumers. It is interesting to note that, even in electricity Grid, bid-based electricity trading over the Internet has been adopted to develop competitive forces in the electricity marketplace.
 
-An economy approach to grid computing introduces a number of new issues to be addressed in addition to those already addressed by existing Grid systems. Grid toolkits such as Globus have addressed the five challenging resource management problems introduced by computational grids: site autonomy, heterogeneous substrate, policy extensibility, resource allocation or co-allocation, and online control. In [4], we proposed a "computational economy" as another key challenging issue that needs to be addressed for developing a service oriented Grid. We proposed an economy-based resource management architecture called GRACE (GRid Architecture for Computational Economy). The GRACE architecture is designed in such a way that it reuses or leverages services supported by the existing infrastructurees (such as Globus, Legion, Condor/G, QBank, and NetCash as much as possible. It offers new services that are particularly missing in them for contructing an economy Grid. The economy Grid framework needs to provide infrastructure that offers the following:
-* An Information and Market directory for publicizing Grid entities
-* Models for establishing the value of resources
-* Resource pricing schemes and publishing mechanisms
-* Economic models and negotiation protocols
-* Mediators to act as a regulatory agency for establishing resource value, currency standards, and crisis handling. 
-* Accounting, Billing, and Payment Mechanisms
+An economy approach to grid computing introduces a number of new issues to be addressed in addition to those already addressed by existing Grid systems. Grid toolkits such as Globus have addressed the five challenging resource management problems introduced by computational grids: site autonomy, heterogeneous substrate, policy extensibility, resource allocation or co-allocation, and online control. In [4], we proposed a "computational economy" as another key challenging issue that needs to be addressed for developing a service oriented Grid. We proposed an economy-based resource management architecture called GRACE (Grid Architecture for Computational Economy). The GRACE architecture is designed in such a way that it reuses or leverages services supported by the existing infrastructurees (such as Globus, Legion, Condor/G, QBank, and NetCash as much as possible. It offers new services that are particularly missing in them for constructing an economy Grid. The economy Grid framework needs to provide infrastructure that offers the following:
+
+\begin{itemize}
+\item An Information and Market directory for publicizing Grid entities
+\item Models for establishing the value of resources
+\item Resource pricing schemes and publishing mechanisms
+\item Economic models and negotiation protocols
+\item Mediators to act as a regulatory agency for establishing resource value, currency standards, and crisis handling. 
+\item Accounting, Billing, and Payment Mechanisms
+\end{itemize}
+
 
 % Economy Models and Related Work
 A market-based approach in computational system design has been the topic of research over the years. Some of these systems have developed a substantial theoretical foundation but without large-scale deployment, experimental validation, and testing. A number of recent systems are attempting to apply computational economy for Web-based computing or for cluster-based systems. Research in the area of artificial intelligence and agents based computing has explored economy-based approach for migration of agents and resource allocation. FIPA (Foundation for Intelligent Physical Agents), a consortium of the software agents community, has proposed a specification for agents negotiation.
 
 Various economic models for resource trading and establishing pricing strategies have been proposed and they include,
-* A Commodity Market (Flat or Demand & Supply driven pricing) Model
-* A Posted Price Model
-* A Bargaining Model
-* A Tendering/Contract-net Model
-* An Auction Model
-* A Bid-based Proportional Resource Sharing Model
-* A Community/Coalition/Bartering Model
+
+\begin{itemize}
+\item A Posted Price Model
+\item A Commodity Market (Flat or Demand \& Supply driven pricing) Model
+\item A Bargaining Model
+\item A Tendering/Contract-net Model
+\item An Auction Model
+\item A Bid-based Proportional Resource Sharing Model
+\item A Community/Coalition/Bartering Model
+\end{itemize}
 
 In [6], we presented architecture and issues associated in implementing the above economic models in the Grid environment. In the context of business negotiation on the Internet these models have been discussed in [23]. The resource providers and consumers can use any one or more of these economic models or even a combination of them while establishing access price depending upon their objective functions. Either the GSP or the GRB can initiate resource trading and participate in a market like environment depending on their requirements. In the commodity market model, resource providers competitively set the price and advertise their service in business directory as service providers (see Figure 1). The pricing scheme can be static or dynamic in nature. Consumers choose resource providers through cost-benefit analysis. The posted price model is similar to commodity market model except that it posts offers long before scheduling. In the bargaining model, providers and consumers do not influence the price for access to services. The negotiation happens privately between a consumer and a provider and there is no way for a consumer to know how much others value the resource services. Accordingly, the consumers need to decide whether to accept/reject offers depending on its private objective function. 
 
@@ -58,11 +160,236 @@ In the Tender/Contract Net model, the consumer (GRB) invites sealded bids from s
 
 In the Community/Coalition/Bartering model, a group of individuals can create a cooperative computing environment to share each other's resources. Those who are contributing resources to a common pool can get access to resources when in need. A sophisticated model can also be employed for deciding the share of resources a contributor can obtain and can allow a user to accumulate credit for future needs. Systems like Mojonation.net employ this credit-based bartering model for storage sharing across the community network. This model works when all participants in the Grid are both service providers and consumers. 
 
+Several research systems have attempted to apply the concept of computational economy for information management, CPU cycles, Storage, and Network access. They include Mariposa, Mungi, Popcorn, Java Market, Enhanced MOSIX, JaWS, Xenoservers, D'Agents, Rexec/Anemone, Spawn, Mojo Nation. These systems can manage either single or multiple resources and they are categorized as follows:
 
+\begin{itemize}
+\item Single Domain Systems: Enhanced MOSIX and Rexec/Anemone.
+\item Web-based Systems: Popcorn, Java Market, and JaWS.
+\item Agent-based systems: Xenoservers and D'Agents. 
+\item Database/Storage systems: Mariposa and Mungi.
+\end{itemize}
+
+
+Each of the resource management systems discussed in Table 1 follows a single model for resource trading. They have been designed with a specific goal in mind either for CPU or storage management. In order to use some of these systems, applications have to be designed using their proprietary programming models, which is generally discouraging, as applications need to be specifically developed for executing on those systems. Also, resource trading and job management modules have been developed as integrated monolithic systems. In our system, we have separated these two concerns through layered design approach. The resource trading services are offered as core services and they can be used by higher-level services/tools such as resource brokers. Another key advantage of our system (a combination of GRACE and Nimrod/G) is that it allows the extension of legacy applications on large wide-area distributed systems. 
+
+% Grid Architecture for Computational Economy (GRACE)
+A computational economy-based architecture for Grid resource management is shown in Figure 2. We generally refer to this architecture as GRACE (Grid Architecture for Computational Economy). This architecture is generic enough to accommodate different economic models used for resource trading for determining the service access cost. The key components of Grid include,
+* User Applications (sequential, parametric, parallel, or collaborative applications)
+* Higher Level Services and Tools (such as Resource Brokers or Market oriented programming environments)
+* Middleware (services resource trading and coupling distributed wide area resources)
+* Grid Fabric components including local resource managers (e.g. Queuing systems)
+
+As mentioned earlier, our goal is to realize this economy Grid architecture by leveraging existing infrastructures such as Globus/Legion as much as missing in them. Therefore, we mainly focus on two things: first, develop middleware services for resource trading using different economic models, second use these services along with other middleware services in developing advanced user-centric Grid resource brokers. Throughout this section, we discuss how we are realizing our economy Grid vision and show co-existence of our modules with other systems. GRACE provides services that help resource owners and user-agents maximize their objective functions. The resource providers can contribute their resource to the Grid and charge for services. They can use GRACE mechanisms to define their charging and access policies and the GRACE resource trader works according to those policies. The users interact with the Grid by defining their requirements through high-level tools such as resource brokers (also known as superschedulers or metaschedulers). The resource brokers work for the consumers and attempts to maximize user utility. They can use GRACE services for resource trading and identifying GSPs that meets its requirements. 
+
+% Grid Resource Broker (GRB)
+The resource broker acts as a mediator between the user and grid resources using middleware services. It is responsible for resource discovery, resource selection, binding of software, data, and hardware resources, initiating computations, adapting to the changes in grid resources and presenting the grid to the user as a single, unified resource. The components or resource broker are the following:
+* Job Control Agent (JCA): This is a persistent control engine responsible for shepherding a job through the system. It coordinates with schedule adviser for schedule generation, handles actual creation of jobs, maintenance of job status, interacting with clients/users, schedule advisor, and dispatcher.
+* Schedule Advisor (Scheduler): This is responsible for resource discovery (using grid explorer), resource selection and job assignment (schedule generation) so as to ensure that the user requirements are met.
+* Grid Explorer: This is responsible for resource discovery by interacting with grid-information server and identifying the list of authorized machines, and keeping track of resource status information.
+* Trade Manager (TM): This works under the direction of resource selection algorithm (schedule advisor) to identify resource access costs. It uses market directory services and GRACE negotiation services for trading with grid service provides (i.e., their representative trade servers).
+* Deployment Agent (DA): It is responsible for activating task execution on the selected resource as per the scheduler's instruction and periodically update the status of task execution to JCA.
+
+Our Nimrod/G broker has components that support similar functions. 
+
+% Economy Grid Middleware in Globus Context
+The grid middleware offers services that help in coupling a grid user and remote resources through a resource broker or grid enabled application. It offers core services [2] such as remote process management, co-allocation of resources, storage access, directory information, security, authentication, and Quality of Service (QoS) such as resource reservation for guaranteed availability and trading for minimizing computational cost. Many of these services are already offered by Globus components and they include,
+* Resource allocation and process management (GRAM).
+* Resource Co-allocation services (DUROC)
+* Unicast and multicast communications services (Nexus)
+* Authentication and related security services (GSI)
+* Distributed access to structure and state information (MDS)
+* Status and Health Monitoring components (HBM)
+* Remote access to data via sequential and parallel interfaces (GASS)
+* Construction, caching, and location of executables (GEM)
+* Advanced resource reservation (GARA)
+
+We provide components that offer services required for constructing economy Grid and that can co-exist with systems like Globus:
+
+* A resource broker (e.g., Nimrod/G)
+* Various resource trading protocols
+* A mediator for negotiating between users and grid service providers (Grid Market Directory)
+* A deal template for specifying resource requirements and services offers
+* A trade server
+* A pricing policy specification
+* Accounting (e.g., QBank) and payment management (GBank)
+
+The new middleware services being proposed are designed to offer low-level services that co-exist with Globus services and infrastructure. These core services can be used by higher level services and tools such as the Nimrod/G Resource Broker that can use various economic models suitable for meeting user requirements.
 
 % A Grid resource broker (GRB) is the main interface a client interacts with when using a distributed system. Grid Information Services (GIS) is used by the broker
 % to discover services available for the client. 
 % 
+
+%% From nimrod reference
+Abstract - The availability of powerful microprocessors and high-speed networks as commodity components has enabled high performance computing on distributed systems (wide-area cluster computing). In this environment, as the resources are usually distributed geographically at various levels (department, enterprise, or worldwide) there is a great challenge in integrating, coordinating and presenting them as a single resource to the user: thus forming a computational grid. Another challenge comes from the distributed ownership of resources with each resource having its own access policy, cost, and mechanism. 
+
+The proposed Nimrod/G grid-enabled resource management and scheduling system builds on our earlier work on Nimrod and follows a modular and component-based architecture enabling extensibility, portability, ease of development, and interoperability of independently developed components. It uses the Globus toolkit services and can be easily extended to operate with any other emerging grid middleware services. It focuses on the management and scheduling of computations over dynamic resources scattered geographically across the Internet at department, enterprise, or global level with particular emphasis on developing scheduling schemes based on the concept of computational economy for a real test bed, namely, the Globus testbed (GUSTO).
+
+%% From virtualorganization reference
+XtreemOS is used as a model for virtual organization management. XtreemOS is a new grid operating system in 2008 with native support for VOs that supports a wide range of computing resources, from clusters to mobiles. 
+
+Grid middleware has become an integral part of scientific computing. The notion of virtual organizations (VOs) is essential for computational grids with large numbers of users and computing nodes. A VO is a set of users and real organizations that collectively provide resources they want to exploit for a common goal. In grid computing, physical machines, services, applications, and data sets, just to name a few, can all be seen as resources. With regard to VOs, the ability to provide a composite platform on which users can arbitrarily run their applications is an ambitious common goal, although we shouldn't disregard supporting VOs with a short lifespan or very specific aim. 
+
+The exact realization of a VO differs depending on its application: some approaches focus on the legal or contractual arrangements between participating entities, whereas other task-oriented approaches empahsize the workflow to achieve a goal. VOs can range from long-lived collaborations with several  users (as in large-scale scientific applications) to short-lived, dynamic ventures among a few participants to achieve one task (such as in commercial scenarios). A general-purpose grid OS should take a flexible approach to support a wide range of applications. XreenOS assumes a minimal definition of VOs and provides a toolbox that system administrators can configure to the needs of their users and applications. 
+
+Several different VO management frameworks and security models exist, and new ones continue to emerge. Their implementations vary in how they represent different user identities (such as X.509 certificates and Shibboleth handles [http://shibboleth.internet2.edu]), information exchange protocols (such as push, pull, and agent models), different representations of security attributes (such as proxy certificates [www.ietf.org/rfc/rfc3820.txt] or SAML tokens [www.oasis-open.org/committees/security]), and different access-control models (such as role-based access control).
+
+In XtreemOS, VOs must interoperate with existing solutions and traditional system security mechanisms (such as Kerberos) rather than replace them. 
+
+% Key points of paper
+\begin{itemize}
+\item Customizable isolation, access control, and auditing
+\item Scalability of dynamic VO management
+\item Ease of use and management
+\end{itemize}
+
+% Design principles
+\begin{itemize}
+\item Single sign-on
+\item Independence of user and resource management\
+\item Dynamic mapping between VO and Unix entities
+\item Minimized changes to the Linux kernel
+\end{itemize}
+
+% XtreemOS VOM Architecture
+The XtreemOS virtual organization manager provides a logical grouping of the infrastructural services needed to manage the entities involved in a VO and ensure a sonsistent and coherent exploitation of the resources, capabilities, and information inside it. The VOM covers five services: identity, attribute, credential, membership, and policy. Given that these services support XtreemOS's authentication and authorization infrastructure, we refer to them as security services. 
+
+% Security Services for VO Management
+The VOM architecture's security services include the following:
+\begin{itemize}
+\item The XtreemOS VO membership service (X-VOMS) validates the memberships of users who initiate a grid request.
+\item The identify service (IDS) generates and manages globally unique VO IDs and user IDs. The system's architecture assumes that resource nodes trust the VO manager. We achive this by requiring all nodes to preinstall teh manager's root CA certificate. 
+\item The attribute service (AttrS) provides users with VO attributes, which let AEM services check against VO policies during resource selection, perform access control to resources and XtreemFS files, enforce system-level resource usage control, and let nodes map global IDs to system UIDs/GIDs. 
+\item The credential distribution authority (CDA) issues users VO credentials for accessing grid-wide services and resources. 
+\item The VO policy service (VOPS) provides policy-related services, such as policy information and decision points, to VOM so that resource access control is enforced not only at nodes, but also by VOM. 
+\end{itemize}
+
+% System-Level VO Support
+The policies that a VO specifies, such as security, resource limitations, scheduling priorities, and rules on sharing resources by VO members, will be checked and ensured at resource nodes by the OS's local instance. 
+
+% VO-customizable, dynamic mapping of grid users onto local accounts.
+We have itnegrated XtreemOS grid-user management into the Linux OS using Pluggable Authentication Modules (PAM), Name Service Switch (NS-Switch), and Kernel Key Retention Servcie (KKRS), all of which are already present in standard Linux distributions. 
+
+% User-space credential translation
+NSSWitch included in the GNU C library (libc), is a mechanism for intercepting queries to traditional Unix file-based information databases (such as password and group files), replacing them with other databases.
+
+% Access control and logging
+Mapping grid users to local accounts lets the XtreemOS system exploit all access-control mechanisms Linux provides. 
+
+% Current Development
+The first XtreemOS release is undergoing an integration phase and will be tested against a range of use cases selected from 14 scientific and commercial applications. 
+
+% System-Level Prototype
+We have implemented a local-level prototype of account mapping and user authentication using X.509 proxy certificates in a PAM and an NSSwitch module. 
+
+% Grid-Level Implementation 
+We have focused our grid-level implementation on CDA and VOPS because they provide external interfaces to other XtreemOS services. 
+% Discussion
+Legion uses an object-based programming model to realize its vision of a single virtual machine to mask the underlying complexity of a wide-scale distributed environment. XtreemOS doesn't try to hide the fact that users and resources reside in a heterogeneous and distributed environment. As opposed to the Legion programming model, XtreemOS aims to equip existing applications with grid capabilities with the minimum amount of refactoring. 
+
+%% From faulttolerant reference
+Abstract 
+With the momentum gaining for the grid computing systems, the issue of deploying support for integrated scheduling and fault-tolerant approaches becomes paramount importance. Unfortunately, fault-tolerance have not been factored into the design of most existing Grid scheduling strategies. To this end, we propose a fault-tolerant scheduling policy that loosely couples job scheduling with job replication shceme such that jobs are efficiently and reliably executed. Performance evaluation of the proposed fault-tolerant scheduler against a non-fualt-tolerant scheduling policy is presented and shown that the proposed policy performs reasonably in the presence of various types of failures. 
+
+Grid computing enables aggregation and sharing of geographically distributed computational, data and other resources as a single, unified resource for solving large-scale compute and data intensive computing applications. The current focus in Grid computing is on building infrastructures and middleware technologies that provide seamless access to wide-area distributed resources. The current focus in Grid computing is on building infrastructures and middleware technologies that provide seamless access to wide-area distributed resources. To this end, various middleware technologies (e.g., resource selection services for locating Grid resources that match application requirements) intended to provide user-level services for building and running wide-area applications have been developed and a tremendous effort is still underway to provide and fine tune these middleware technologies. These middleware technologies collectively allow grid users to access large resources in order to solve the most challenging computational problems.
+
+For example, Grid infrastructures such as Legion and Globus have simplified access and usage of grid computing, allowing it to be useful to a wider range of scientists and engineers. Globus provides the basic infrastructure with capabilities and interfaces for communications, resource location, and data acess. Note that Globus does not make resource allocation decisions, instead the objective is to build toolkits on top of the exiting systems. For instance, it provides a standard network-enabled interface to local resource management systems. Resources and computation management services are implemented in a hierarchical fashion. Legion is a meta operating system that utilizes host operating system services to create the illusion of a single virtual machine.However, the main motivation of existing Grid infrastructures is to provide mechanisms for sharing and accessing large and heterogeneous collections of remote resources such as computers, on-line instruments, storage space, data, and applications, and it remains the primary goal today. 
+
+% System and model related work
+In this paper, we define resource as any capability that must be scheduled, assigned, or controlled by the underlying implementation to assure non-conflicting usage by processes. Examples of resources include processors and storage devices. Also, a node refers to a processor, workstation, or a computing machine and the terms are used interchangeably to refer to a request made by a user to run a given application or program with a given input. Each job can be viewed as composed of a set of independent units of computational work, which we refer to as tasks or processes that may run independently or in parallel. 
+
+% System Model
+The basic components of a grid system consists of N sites and each site is composed of a set of nodes, P_{1},...,P_{n}, and a set of disk storage systems. The resources in a given site are shareable (i.e., community-based) and the nodes may fail with probability f, 0 <= f <= 1, and be repaired independently. Each site in the grid has a single resource manager (SRM), which provides scheduling and resource management services. SRM provides resource reservation and job staging facilities as well. Users can submit a job to SRM, which determines where and when to run the job. 
+
+Each job, J_{i}, that arrives to SRM can be decomposed into t tasks, J_{i}={T_{i},...,T_{t}} and each task T_{i} executes sequential code and is fully preemptable. By default, allocation of resources from multiple sites to a single job is allowed. This capability can be disabled system wide or on a per job basis. Users must log onto a site and submit jobs to the local SRM of that site using a command language such as matchmaker used in Condor-G. 
+
+Note that access to resourcs is typically subject to individual access, accounting, priority, and security policies of the resource owners. Those policies are typically enforced by local management systems.In this paper, we do not consider security-related issues. Also, we assume that every SRM in the system is reachable from any other SRM unless there is a failure in the network or the node housing the SRM. A scheme to deal with node, scheduler and link failures is discussed in [1]. 
+
+% Related Work
+Although job scheduling and fault-tolerance are active areas of research in distributed environments, these two areas have largely been and continue to be developed independent of one another each focusing on a different aspects of computing. With respect to fault-tolerance, checkpoint-recovery and job replication on distributed systems.However, as noted in [10], these fault-tolerant approaches typically ignore the issue of processor allocation. This can lead to a significant degradation in response time of the applications and to counter this effect an efficient job scheduling policy is required. 
+
+Scheduling policies for Grid systems can be classified into space-sharing and time-sharing. It is also possible to combine these two types of policies into a hybrid policy. In a time-sharing scheme processors are shared over time by executing different applications on the same processors during different time intervals, which is commonly known as time-slice or quantum. 
+
+In contrast, in the space sharing approach, processors are partitioned into disjoint sets and each application executes in isolation on one of these sets. Space sharing approaches can be classified as static-space sharing, adaptive space sharing and dynamic space sharing. In this paper, we focus on the static space-sharing policy as this model of scheduling is quite common in Grid environments.Example of Grid systems that use static space-sharing includes Load Sharing Facility (LFS), Condor-G, and Nimrod/G. 
+
+However, these previous research in scheduling has focused on efficiency by exploiting as much parallelism as possible while assuming that the resources are 100\% reliable. 
+
+% Failure Model 
+In this paper, we assume that the system components may fail and can be eventually recovered from failure. Also, we assume that both hardware and software failures obey the fail-stop failure mode. As in [9], we assume that faults can occur on-line at any point in time and the total number of faulty processors in a given cluster may never exceed a known function. We also assume that node failures are independent from each other. 
+
+% Distributed Fault-Tolerant Scheduling Policies
+In this section, the proposed fault-tolerant scheduling policy, which we refer to as Distributed Fault-Tolerant Scheduling (DFTS) policy is discussed. Our goal is to design an on-line scheduling policy such that applications are efficiently and reliably executed to their logical termination. By an on-line we mean that the scheduler has no knowledge of: (1) the service time of the jobs or the tasks; (2) the job arrival times; (3) how many processors each job needs until the job actually arrives; (4) and the set of processors available for scheduling the jobs. 
+
+We use job replication strategy in which each replica is independently scheduled in a different site to achieve fault tolerance. The motivation for job replication is that resources in the Grid environment can be highly underutilized thus these spare resources can be used to run job replicas such that at least one of the replicas would successfully complete. 
+
+DFTS employs peer-to-peer fail-over strategy such that every SRM is a backup of another SRM in the system. The primary (PRSM) and the backup RSM (BRSM) also communicate periodically such that the BRSM assumes the responsibility of the PRSM in the event that the latter fails. In case of a link failure between PRSM and remote SRMs, we let the BRSM to assume monitoring of job progress and inform the PRSM if possible. If BRSM cannot monoitor the jobs, we then allow the SRM with the lowest id to monitor the execution of the job. The following parameters are used in the pseudocodes described in Figure 2 and Figure 3:
+\begin{itemize}
+\item 1. k:A replica threshold, n >= k, and set based on the system state.
+\item 2. R: The number of sites that have responded to the poll message of the home SRM,
+\item 3. monitor: The time-interval between checking the health of the replicas
+\item 4. H: is the number of healthy replicas of a running job at any given point in time. 
+\end{itemize}
+
+DFTS is triggered by the arrival of a job for scheduling to the home SRM. A job and its replica are submitted to the PSRM and the BSRM, respectively. There are two main components of the DFTS policy which are briefly discussed in the following subsections. 
+
+% Job and Replica Placement
+
+Figure 2 is the pseudo-code of the job placement algorithm. When a job arrives, DFTS chooses a set of n candidate sites, n >= 1, for job execution (including the home site) and orders them for an estimate of the job completion time. Note that if the home SRM cannot find n condidate sites, we still schedule the job. At the same time, we reserve a set of sites equal to the number of unscheduled job replicas for future placement of these replicas. In the current implementation, we simply choose those sites that can complete the jobs fast and that have not been already reserved. When these sites become available, the contact the SRM that has reserved them.We are currently working on a cost-based approach to determine the best possible sites for the applications and will be included in the expanded version of the paper. When a PRSM recruiters n SRMs on which the job executes, it also sends the identity of the BSRM to these n site managers. 
+
+Placement algorithm
+\begin{itemize}
+\item 1. Poll all sites for availability information
+\begin{itemize}
+  \item (a) IF (R >= n)THEN
+  \begin{itemize}
+    \item i. Choose the best n sites
+    \item ii. Designate one of them as a backup home SM and notify the n sites the backup 
+  \end{itemize}
+  \item (b) ELSE
+    i. Reserve n-R site that are expected to finish soon.
+    ENDIF
+    2. IF there is at least one site THEN
+    (a) Send a replica of the job to each site
+    (b) update job table and backup scheduler.
+    ENDIF
+
+Figure 2. Job and Replica Algorithm
+
+Once the candidate sites are selected, the home SRM designates one of the n SRMs as a backup home SRM and sends the identify of the backup SRM to the candidate sites. The home SRMand the backup SRM also communicate periodically such that the backup SRM assumes the responsibility of the home SRM in case the latter fails. The home SM then sends a replica of the job to each site and updates the job table and backup scheduler with this information. In case that all replicas of the job have not been scheduled, the home SRM monitors the availability of those sites it reserved by listening to them. As soon as one becomes available, SRM schedules a replica to the site. If a job successfully completes, the home SRM sends release message to each site it had reserved such that these sites can be used for running other jobs. 
+
+In order to avoid a race problem, we introduced a time-based reservation sheme such that once a remote SM offers its resources to execute a job, it will not accept any request from another SM until such time that it is released by the HSM that has reserved it or the time limit expires or the job assigned to it completes. 
+
+Replica Manager Algorithm
+1. Prompt all remote SRMs that have not reported job status
+2. Determine the number of healthy replicas (i.e., h)
+3. IF any replica is done THEN
+(a) Tell all remote SRMs to terminate their replica
+(b)Update job table
+4. ELSEIF(H > n) THEN
+(a) Select last replica from set to terminate
+(b) Update job table
+5. ELSE
+(a)Pick next site from set to terminate
+(b)Inform the remote SRM to execute the jbo 
+(c) Update job table
+ENDIF
+
+Conclusions
+In this paper, we presented a fault-tolerant job scheduling approach for Grid computing that integrates job scheduling with job replications approach. We examined the proposed scheduling policy under various system and job parameters as well as failure scenarios. The results show that performances degrades gracefully in the presence of failures while the overhead of the fault-tolerance components is negligible when there is no failure. 
+
+The experimental results show that the proposed policy performed at los cost in order to support fault-tolerance. Thus the results we obtained encourage us to continue our research in this direction. Another important characteristic of the proposed approach is that they are applicable for a wide variety of target machines including Grid computing. 
+
+In future work, we want to use cost-based resource selection. We also plan to implement the policy and investigate its overhead and performance on actual system. We configured the system with two replicas, but this default value may change adaptively depending on the reliability of the cluster-computing environment. This will be a subject to be addressed in the future. 
+
+%% From xtreemos reference
+
+
+
+
+
+%% From 
+\end{comment}
+ 
+
 
 \bibliographystyle{plain}
 \bibliography{references}
